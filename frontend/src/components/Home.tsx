@@ -49,7 +49,7 @@ export default function Home() {
         />
       </div>
 
-          <div className='flex  gap-4 '>
+          <div className='flex  gap-4 mt-10'>
             
             
             <Card type="twitter" link="https://x.com/kirat_tw/status/1633685473821425666" title="First Tweet"/>    

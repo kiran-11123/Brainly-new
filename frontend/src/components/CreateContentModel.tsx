@@ -9,6 +9,11 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
     const [link, setLink] = useState("");
     const [type, setType] = useState("");
 
+
+    function SubmitForm() {
+
+    }
+
     return (
         <div>
             {open && (
@@ -16,7 +21,7 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
                     <div className="flex flex-col justify-center p-4 rounded-md ">
 
                         {/* changed span -> div (block container so inputs fit full width) */}
-                        <div className="bg-white opacity-100 rounded-md max-w-xl min-w-96">
+                        <div className="bg-white opacity-100 rounded-md max-w-xl min-w-96 ">
 
                             <div className="flex justify-end cursor-pointer p-2 text-black w-full">
                                 <div onClick={Onclose} className="bg-red-900 rounded-full">
@@ -24,25 +29,43 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
                                 </div>
                             </div>
 
-                            <div className="w-full flex flex-col items-center">
-                                <Input
-                                    placeholder="Title"
-                                    onChange={(e:any) => setTitle(e.target.value)}
-                                />
-                                <Input
-                                    placeholder="Link"
-                                    onChange={(e:any) => setLink(e.target.value)}
-                                />
-                                <Input
-                                    placeholder="Type"
-                                    onChange={(e:any) => setType(e.target.value)}
-                                />
+                            <div className="flex justify-center items-center bg-gray-50">
+                                <form
+                                    className="space-y-5 w-full max-w-80 bg-white p-6 rounded-lg shadow-md"
+                                    onSubmit={SubmitForm}
+                                >
 
-                                <div className="flex justify-center p-4">
-                                    <button className="px-4 py-2 rounded bg-blue-800 text-white hover:bg-blue-950">
+                                    <div>
+                                        <label className="font-bold text-lg sm:text-xl block mb-1">
+                                            Title
+                                        </label>
+
+                                        <input onChange={(e) => setTitle(e.target.value)} required value={title} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter Title" type="email" />
+                                    </div>
+
+
+                                    <div>
+                                        <label className="font-bold text-lg sm:text-xl block mb-1">
+                                            Link
+                                        </label>
+
+                                        <input required onChange={(e) => setLink(e.target.value)} value={link} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Paste the Link here" type="Password" />
+                                    </div>
+
+                                    <div>
+                                        <label className="font-bold text-lg sm:text-xl block mb-1">
+                                            Type
+                                        </label>
+
+                                        <input required onChange={(e) => setType(e.target.value)} value={type} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="ex :twitter ,youtube ,file ,note" type="Password" />
+                                    </div>
+
+
+                                    <button className="text-center font-bold text-lg sm:xl  w-full rounded-lg bg-blue-500 text-white mb-5 px-3 py-2">
                                         Submit
                                     </button>
-                                </div>
+
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -52,15 +75,4 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
     );
 }
 
-function Input({ onChange, placeholder }: { onChange: (e: any) => void, placeholder: string }) {
-    return (
-        <div >
-            <input
-                type="text"
-                placeholder={placeholder}
-                onChange={onChange}
-                className="w-full px-6 py-3 border rounded-md m-2"
-            />
-        </div>
-    );
-}
+
