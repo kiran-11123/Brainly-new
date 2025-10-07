@@ -35,7 +35,7 @@ Contents_Router.get("/content", Auth_middleware_1.Auth_Middleware, (req, res) =>
         return res.status(200).json({
             message: "Data Feteched Successfully...",
             ok: true,
-            data: content_data
+            result: content_data
         });
     }
     catch (er) {
@@ -50,14 +50,15 @@ Contents_Router.post("/content", Auth_middleware_1.Auth_Middleware, (req, res) =
         const title = req.body.title;
         const link = req.body.link;
         const type = req.body.type;
+        const desciption = req.body.desciption;
         //@ts-ignore
         const userId = req.user.user_id;
         yield contents_1.default.create({
             title: title,
+            desciption: desciption,
             link: link,
             type: type,
             userId: userId,
-            tags: []
         });
         return res.status(200).json({
             ok: true,

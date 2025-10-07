@@ -21,7 +21,6 @@ const Auth_Middleware = (req, res, next) => {
         });
     }
     try {
-        ;
         const decoded = jsonwebtoken_1.default.verify(token, JWT_SECRET);
         //@ts-ignore
         if (!decoded.user_id) {

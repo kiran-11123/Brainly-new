@@ -57,7 +57,8 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
 
         }
         catch(er){
-
+            
+            console.log(er);
             SetMessage("Request Failed . Server Error")
                          
         }
@@ -82,22 +83,22 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
                             <div className="flex justify-center items-center bg-gray-50 mb-5">
                            
                                 <form
-                                    className="space-y-5 w-full max-w-80 bg-gray-800 text-white font-mono p-6 rounded-lg shadow-md"
+                                    className="space-y-5 w-full max-w-80 bg-gray-800 font-mono p-6 rounded-lg shadow-md"
                                     onSubmit={SubmitForm}
                                 >
 
                                     <h1 className="text-center font-mono text-xl font-semibold">Add Contents</h1>
 
                                     <div>
-                                        <label className="font-bold text-lg sm:text-xl block mb-1">
+                                        <label className="font-bold text-lg sm:text-xl block mb-1 text-white">
                                             Title
                                         </label>
 
-                                        <input onChange={(e) => setTitle(e.target.value)} required value={title} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter Title"  />
+                                        <input onChange={(e) => setTitle(e.target.value)} required value={title} className="w-full text-black px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter Title"  />
                                     </div>
 
                                       <div>
-                                        <label className="font-bold text-lg sm:text-xl block mb-1">
+                                        <label className="font-bold text-lg sm:text-xl block mb-1 text-white">
                                             Description
                                         </label>
 
@@ -106,7 +107,7 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
 
 
                                     <div>
-                                        <label className="font-bold text-lg sm:text-xl block mb-1">
+                                        <label className="font-bold text-lg sm:text-xl block mb-1 text-white">
                                             Link
                                         </label>
 
@@ -116,7 +117,7 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
                                     
 
                                     <div>
-                                        <label className="font-bold text-lg sm:text-xl block mb-1">
+                                        <label className="font-bold text-lg sm:text-xl block mb-1 text-white">
                                             Type
                                         </label>
 
@@ -130,11 +131,13 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
 
                                 </form>
 
+              
+                            </div>
+
                                 <div>
 
                                     {message && <h1 className="text-lg text-center text-red-800">{message}</h1>}
                                 </div>
-                            </div>
                         </div>
                     </div>
                 </div>

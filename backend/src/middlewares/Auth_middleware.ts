@@ -25,7 +25,7 @@ export const Auth_Middleware = (req:Request,res:Response,next:NextFunction)=>{
    try{
     
 
-;
+
     const decoded = jwt.verify(token as string , JWT_SECRET);
     //@ts-ignore
      if (!decoded.user_id) {

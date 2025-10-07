@@ -13,6 +13,7 @@ Contents_Router.get("/content" , Auth_Middleware , async(req,res)=>{
         //@ts-ignore
         const userId = req.user.user_id;
 
+
         const content_data = await Contents.find({
             userId:userId
         }).populate("userId","username")
@@ -48,16 +49,17 @@ Contents_Router.post("/content" , Auth_Middleware , async(req,res)=>{
          const title = req.body.title
          const link = req.body.link;
          const type = req.body.type;
+         const desciption = req.body.desciption;
          //@ts-ignore
          const userId = req.user.user_id;
 
          await Contents.create({
             title:title,
+            desciption:desciption,
             link:link,
             type:type,
             userId:userId,
-            tags:[]
-
+          
 
          })
 
