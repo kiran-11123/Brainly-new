@@ -1,4 +1,4 @@
-import { ShareIcon } from 'lucide-react';
+import { ShareIcon_1 } from "../icons/ShareIcon_1";
 import { Trash2 } from 'lucide-react';
 import { NotebookText } from 'lucide-react';
 import { Youtube } from "lucide-react"
@@ -33,7 +33,7 @@ export default function Card({ title, link, type }: CardProps) {
 
                     <div className="pr-2 text-gray-500">
                         <a href={link} target="_blank" >
-                            <ShareIcon size="lg" />
+                            <ShareIcon_1 size="lg" />
                         </a>
 
                     </div>
