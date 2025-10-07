@@ -16,7 +16,7 @@ export default function Sidebar() {
                 <h1 className="font-bold font-mono text-xl">Second Brain</h1>
             </div>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 cursor-pointer">
 
                 <SidebarItems title="Tweet" icon={<Twitter />} />
 

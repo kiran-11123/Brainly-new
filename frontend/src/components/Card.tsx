@@ -5,10 +5,11 @@ import { useEffect, useRef } from "react";
 interface CardProps {
   title: string;
   link: string;
+  description:string,
   type: "twitter" | "youtube" | "file" | "note";
 }
 
-export default function Card({ title, link, type }: CardProps) {
+export default function Card({ title, link, type ,description}: CardProps) {
 
 
  

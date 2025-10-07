@@ -27,7 +27,7 @@ Contents_Router.get("/content" , Auth_Middleware , async(req,res)=>{
         return res.status(200).json({
             message:"Data Feteched Successfully...",
             ok:true,
-            data:content_data
+            result:content_data
         })
 
         

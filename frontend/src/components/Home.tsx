@@ -4,13 +4,42 @@ import { PlusIcon } from '../icons/PlusIcon'
 import { ShareIcon } from 'lucide-react'
 import { ShareIcon_1 } from '../icons/ShareIcon_1'
 import Card from './Card'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CreateContentModel from './CreateContentModel'
+import axios from 'axios'
 
 import Sidebar from './Sidebar'
+
+interface ContentItem {
+  type: "twitter" | "youtube" | "file" | "note";
+  description: string;
+  link: string;
+  title: string;
+}
 export default function Home() {
 
   const[modelOpen , setOpenModel] = useState(false);
+  const[contents,setContents]=useState<ContentItem[]>([]);
+  const [isfound, setIsfound] = useState(false);
+
+
+  useEffect(()=>{
+
+    async function getData() {
+
+      const response = await axios.get("http://localhost:3000/api/v1/data/content",{
+        withCredentials:true
+      } );
+
+      if(response.status===200){
+           setContents(response.data.result)
+           setIsfound(true);
+      }
+      
+      
+    }
+
+  },[])
 
 
   return (
@@ -47,13 +76,25 @@ export default function Home() {
         size="md" 
         onClick={() => setOpenModel(true)} 
         />
+        <Button variant="primary" text="Logout" size="md"   />
       </div>
 
-          <div className='flex  gap-4 mt-10'>
-            
-            
-            <Card type="twitter" link="https://x.com/kirat_tw/status/1633685473821425666" title="First Tweet"/>    
-         </div>
+          <div className="flex flex-row flex-wrap items-center justify-center gap-6 px-8 py-6 pt-20 mt-5">
+        {isfound ? (
+          contents.map((item, index) => (
+            <div
+              key={index}
+              className="w-full sm:w-[400px] transition-all duration-300 ease-in-out hover:outline 
+          hover:outline-2 hover:outline-blue-300 hover:border hover:border-blue-400 
+          items-center hover:shadow-xl hover:shadow-gray-300/50 rounded-2xl"
+            >
+              <Card key={index} type={item.type} description={item.description} link={item.link} title={item.title} />
+            </div>
+          ))
+        ) : (
+          <p className="text-center text-lg sm:text-xl font-semibold">No Posts Present</p>
+        )}
+      </div>
         
           
     </div>
