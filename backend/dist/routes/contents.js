@@ -15,11 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const contents_1 = __importDefault(require("../Database_Schema/contents"));
 const Contents_Router = express_1.default.Router();
-const Auth_middleware_1 = require("../middlewares/Auth_middleware");
+const Auth_middleware_1 = __importDefault(require("../middlewares/Auth_middleware"));
 const Links_1 = __importDefault(require("../Database_Schema/Links"));
 const utils_1 = require("./utils");
 const Users_1 = __importDefault(require("../Database_Schema/Users"));
-Contents_Router.get("/content", Auth_middleware_1.Auth_Middleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Contents_Router.get("/content", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //@ts-ignore
         const userId = req.user.user_id;
@@ -45,17 +45,18 @@ Contents_Router.get("/content", Auth_middleware_1.Auth_Middleware, (req, res) =>
         });
     }
 }));
-Contents_Router.post("/content", Auth_middleware_1.Auth_Middleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Contents_Router.post("/content", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log("Inside the function");
         const title = req.body.title;
         const link = req.body.link;
         const type = req.body.type;
-        const desciption = req.body.desciption;
+        const description = req.body.description;
         //@ts-ignore
         const userId = req.user.user_id;
         yield contents_1.default.create({
             title: title,
-            desciption: desciption,
+            description: description,
             link: link,
             type: type,
             userId: userId,
@@ -93,7 +94,7 @@ Contents_Router.delete("/delete_content", (req, res) => __awaiter(void 0, void 0
         });
     }
 }));
-Contents_Router.post("/share", Auth_middleware_1.Auth_Middleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Contents_Router.post("/share", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //@ts-ignore
         const userId = req.user.user_id;

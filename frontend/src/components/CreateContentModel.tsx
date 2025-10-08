@@ -17,6 +17,7 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
         e.preventDefault();
 
         try{
+            console.log("Submitting the form");
 
             const response = await axios.post("http://localhost:3000/api/v1/data/content" , {
 
@@ -28,6 +29,8 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
             } ,{
                 withCredentials:true
             })
+
+            console.log(response);
 
             if(response.status===200){
                  SetMessage("Contents added successfully..")

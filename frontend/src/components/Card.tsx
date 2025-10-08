@@ -6,7 +6,7 @@ interface CardProps {
   title: string;
   link: string;
   description:string,
-  type: "twitter" | "youtube" | "file" | "note";
+  type: "twitter" | "youtube" | "file" | "note" ;
 }
 
 export default function Card({ title, link, type ,description}: CardProps) {
@@ -15,7 +15,7 @@ export default function Card({ title, link, type ,description}: CardProps) {
  
 
   return (
-    <div className="bg-white p-4 border border-gray-200 w-80 min-h-48 rounded-md outline-slate-200">
+    <div className="bg-white p-4 border border-gray-200 max-w-4xl min-h-48 rounded-md outline-slate-200">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center text-md">
@@ -75,6 +75,10 @@ export default function Card({ title, link, type ,description}: CardProps) {
           </div>
         )}
       </div>
+
+       <div>{description}</div>
+
+     
     </div>
   );
 }

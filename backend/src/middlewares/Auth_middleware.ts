@@ -1,57 +1,46 @@
-import { NextFunction , Request , Response } from "express";
-import dotenv from 'dotenv'
-import jwt,{JwtPayload} from 'jsonwebtoken'
-dotenv.config();
 
-
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 const JWT_SECRET = process.env.JWT_SECRET_KEY
 
 if(!JWT_SECRET){
     console.log("FATAL ERROR: JWT_SECRET is not defined.");
     process.exit(1);
 }
-export const Auth_Middleware = (req:Request,res:Response,next:NextFunction)=>{
-    
-    const token = req.cookies?.token;
+import { Request, Response, NextFunction } from 'express';
 
-   
-        if (!token) {
+dotenv.config();
+
+const secret = process.env.SECRET_KEY;
+
+const Authentication_token = (req: Request, res: Response, next: NextFunction) => {
+  const token = req.cookies?.token;
+
+  if (!token) {
     return res.status(401).json({
       message: "Unauthorized: No token found"
     });
   }
-   
 
-   try{
-    
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
 
-
-    const decoded = jwt.verify(token as string , JWT_SECRET);
-    //@ts-ignore
-     if (!decoded.user_id) {
+    if (!decoded || typeof decoded !== 'object' || !('user_id' in decoded)) {
       return res.status(401).json({
         message: "Invalid token payload"
       });
     }
-
-    if(decoded){
-
     //@ts-ignore
-    req.user = decoded as string | JwtPayload
-    }
+    req.user = decoded; // will have userId inside
+    next();
+  } catch (er) {
+    return res.status(401).json({
+      message: "Invalid token",
+      //@ts-ignore
+      error: er.message
+    });
+  }
+};
 
-
-   }
-
-   catch(er){
-    return res.status(403).json({
-        message:"Invalid or Expired Token",
-        error:er
-    })
-   }
-
-    
-    
-   
-
-}
+export default Authentication_token;

@@ -1,12 +1,12 @@
 import express from 'express'
 import Contents from '../Database_Schema/contents'
 const Contents_Router = express.Router();
-import { Auth_Middleware } from '../middlewares/Auth_middleware';
+import Authentication_token from '../middlewares/Auth_middleware';
 import Links from '../Database_Schema/Links';
 import { random } from './utils';
 import { appendFile, link } from 'fs';
 import Users from '../Database_Schema/Users';
-Contents_Router.get("/content" , Auth_Middleware , async(req,res)=>{
+Contents_Router.get("/content" , Authentication_token , async(req,res)=>{
         
     try{
          
@@ -41,21 +41,23 @@ Contents_Router.get("/content" , Auth_Middleware , async(req,res)=>{
     }
 })
 
-Contents_Router.post("/content" , Auth_Middleware , async(req,res)=>{
+Contents_Router.post("/content" , Authentication_token , async(req,res)=>{
       
     
    try{
+
+   
          
          const title = req.body.title
          const link = req.body.link;
          const type = req.body.type;
-         const desciption = req.body.desciption;
+         const description = req.body.description;
          //@ts-ignore
          const userId = req.user.user_id;
 
          await Contents.create({
             title:title,
-            desciption:desciption,
+            description:description,
             link:link,
             type:type,
             userId:userId,
@@ -111,7 +113,7 @@ Contents_Router.delete("/delete_content" , async(req,res)=>{
     }
 })
 
-Contents_Router.post("/share"  , Auth_Middleware,async(req,res)=>{
+Contents_Router.post("/share"  , Authentication_token,async(req,res)=>{
       
     try{
         
