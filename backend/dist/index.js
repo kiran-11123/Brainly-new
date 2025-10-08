@@ -9,6 +9,7 @@ const db_1 = __importDefault(require("./db"));
 const Authentication_routes_1 = __importDefault(require("./routes/Authentication_routes"));
 const contents_1 = __importDefault(require("./routes/contents"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const Search_data_1 = __importDefault(require("./routes/Search_data"));
 const app = (0, express_1.default)();
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
@@ -19,6 +20,7 @@ app.use((0, cors_1.default)({
 (0, db_1.default)();
 app.use("/api/v1/users", Authentication_routes_1.default);
 app.use("/api/v1/data", contents_1.default);
+app.use("/api/v1/search", Search_data_1.default);
 app.listen(3000, () => {
     console.log("Server Connected...");
 });

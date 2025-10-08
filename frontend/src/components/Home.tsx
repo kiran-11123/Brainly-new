@@ -17,6 +17,7 @@ interface ContentItem {
   description: string;
   link: string;
   title: string;
+  index:Number;
 }
 
 
@@ -115,7 +116,7 @@ export default function Home() {
           hover:outline-2 hover:outline-blue-300 hover:border hover:border-blue-400 
           items-stretch hover:shadow-xl hover:shadow-gray-300/50 rounded-2xl"
               >
-                <Card key={index} type={item.type} description={item.description} link={item.link} title={item.title} />
+                <Card key={index} type={item.type} description={item.description} link={item.link} title={item.title} index={index} />
               </div>
             ))
           ) : (

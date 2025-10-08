@@ -1,3 +1,4 @@
+import axios from "axios";
 import { ShareIcon_1 } from "../icons/ShareIcon_1";
 import { Trash2, NotebookText, Youtube, Twitter, Files } from "lucide-react";
 import { useEffect, useRef } from "react";
@@ -7,9 +8,41 @@ interface CardProps {
   link: string;
   description:string,
   type: "twitter" | "youtube" | "file" | "note" ;
+  index:Number
 }
 
-export default function Card({ title, link, type ,description}: CardProps) {
+async function deleteContent(index:Number) {
+
+  try{
+
+    const response = await axios.delete("http://localhost:3000/api/v1/data/delete" ,{
+      data:{contentId:index},
+      withCredentials:true
+    })
+
+    console.log(response);
+
+    if(response.status===200){
+      alert("Content Deleted Successfully");
+      window.location.reload();
+    }
+    else{
+      alert("Error Occured while deleting..") 
+    }
+
+
+
+  }
+  catch(er){
+    console.log(er);
+      alert("Error Occured while deleting..")
+  }
+
+
+  
+}
+
+export default function Card({ title, link, type ,description ,index}: CardProps) {
 
 
  
@@ -35,7 +68,7 @@ export default function Card({ title, link, type ,description}: CardProps) {
             </a>
           </div>
           <div className="text-gray-500 cursor-pointer">
-            <Trash2 />
+            <button title="delete" onClick={(e)=>deleteContent(index)}><Trash2 /></button>
           </div>
         </div>
       </div>

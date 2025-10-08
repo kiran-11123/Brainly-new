@@ -99,9 +99,13 @@ Contents_Router.post("/content" , Authentication_token , async(req,res)=>{
 
 })
 
-Contents_Router.delete("/delete_content" , async(req,res)=>{
+Contents_Router.delete("/delete" , async(req,res)=>{
        
     try{
+
+        console.log("Delete API Called..")
+        console.log(req.body);
+     
 
         const content_id = req.body.contentId;
 

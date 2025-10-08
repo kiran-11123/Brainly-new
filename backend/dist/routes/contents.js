@@ -84,8 +84,10 @@ Contents_Router.post("/content", Auth_middleware_1.default, (req, res) => __awai
         });
     }
 }));
-Contents_Router.delete("/delete_content", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Contents_Router.delete("/delete", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log("Delete API Called..");
+        console.log(req.body);
         const content_id = req.body.contentId;
         yield contents_1.default.deleteMany({
             content_id,
