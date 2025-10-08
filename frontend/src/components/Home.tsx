@@ -7,6 +7,8 @@ import Card from './Card'
 import { useEffect, useState } from 'react'
 import CreateContentModel from './CreateContentModel'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import Cookies from "js-cookie";
 
 import Sidebar from './Sidebar'
 
@@ -16,11 +18,27 @@ interface ContentItem {
   link: string;
   title: string;
 }
+
+
 export default function Home() {
 
   const[modelOpen , setOpenModel] = useState(false);
   const[contents,setContents]=useState<ContentItem[]>([]);
   const [isfound, setIsfound] = useState(false);
+
+  const navigate = useNavigate();
+
+  
+
+    function Logout() {
+
+    Cookies.remove("token");
+
+
+    navigate("/", { replace: true });
+
+
+  }
 
 
   useEffect(()=>{
@@ -76,7 +94,7 @@ export default function Home() {
         size="md" 
         onClick={() => setOpenModel(true)} 
         />
-        <Button variant="primary" text="Logout" size="md"   />
+        <Button variant="primary" text="Logout" size="md"  onClick={Logout} />
       </div>
 
           <div className="flex flex-row flex-wrap items-center justify-center gap-6 px-8 py-6 pt-20 mt-5">
