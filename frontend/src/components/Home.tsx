@@ -65,6 +65,8 @@ export default function Home() {
   }, [])
 
 
+
+
   return (
 
 
@@ -102,7 +104,7 @@ export default function Home() {
           <Button variant="primary" text="Logout" size="md" onClick={Logout} />
         </div>
 
-        <div className="flex flex-row flex-wrap items-stretch justify-center gap-4 px-8 py-6 pt-20 mt-5">
+        <div className="flex flex-col ml-72 sm:flex-row sm:flex-wrap items-stretch justify-center gap-4 px-8 py-6 pt-20 mt-5">
           {isfound ? (
             contents.map((item, index) => (
               <div

@@ -2,6 +2,7 @@ import { useState } from "react";
 import CrossIcon from "../icons/CrossIcon";
 import { Button } from "./Button";
 import axios from "axios";
+import { useEffect } from "react";
 
 interface Values{
     title:string;
@@ -20,6 +21,17 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
     const[message ,SetMessage] =useState("");
 
 
+      useEffect(()=>{
+
+
+    setTimeout(()=>{
+
+      alert("You can send the twitter link ,Youtube video link , Notes in description box if not link , files link also")
+
+    },3000);
+  },[])
+
+
     async function SubmitForm(e:any) {
         e.preventDefault();
 
@@ -31,6 +43,16 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
                 link:"",
                 type:"",
                 description:""
+            }
+
+            if(title.length > 10) {
+                alert("Title should be less than 10 characters");
+                return;
+            }
+
+            if(description.length > 50) {
+                alert("Description should be less than 50 characters");
+                return;
             }
 
             if(title.length>0 && title.length<10){
@@ -95,7 +117,7 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
     return (
         <div>
             {open && (
-                <div className="w-full flex justify-center h-screen bg-gray-500 fixed opacity-60 top-0 left-0 rounded-md">
+                <div className="w-full flex justify-center h-screen bg-gray-500 fixed opacity-100 top-0 left-0 rounded-md">
                     <div className="flex flex-col justify-center p-4 rounded-md ">
 
                         {/* changed span -> div (block container so inputs fit full width) */}
@@ -114,7 +136,7 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
                                     onSubmit={SubmitForm}
                                 >
 
-                                    <h1 className="text-center font-mono text-xl font-semibold">Add Contents</h1>
+                                    <h1 className="text-center font-mono text-xl font-semibold text-white">Add Contents</h1>
 
                                     <div>
                                         <label className="font-bold text-lg sm:text-xl block mb-1 text-white">

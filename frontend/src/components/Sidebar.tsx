@@ -9,7 +9,7 @@ import { Brain } from 'lucide-react';
 export default function Sidebar() {
 
     return (
-        <div className="h-screen bg-white border-r w-72 top-0 left-0 flex flex-col">
+        <div className="h-screen fixed bg-white border-r w-72 top-0 left-0 flex flex-col">
 
             <div className=" mt-2  mb-10 flex items-center p-2  gap-2">
                 <Brain />
