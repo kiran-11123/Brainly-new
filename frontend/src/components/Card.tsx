@@ -56,7 +56,7 @@ export default function Card({ title, link, type ,description}: CardProps) {
           </div>
         )}
 
-        {type === "twitter" && (
+        {type === "twitter"  && (
           <div
             
             className="border border-gray-200 h-72 rounded-lg overflow-y-auto overflow-x-hidden shadow-sm bg-white flex justify-center"
@@ -74,6 +74,23 @@ export default function Card({ title, link, type ,description}: CardProps) {
             </div>
           </div>
         )}
+
+        {type === "file" && (
+
+          <div className="border border-gray-200 h-72 rounded-lg overflow-y-auto overflow-x-hidden shadow-sm bg-white flex justify-center items-center">
+            {description}
+            </div>
+
+        )} 
+
+        {type === "note" &&(
+
+          <div className="border border-gray-200 h-72 rounded-lg overflow-y-auto overflow-x-hidden shadow-sm bg-white flex justify-center items-center">
+            {description}
+            </div>
+
+        )}
+      
       </div>
 
        <div>{description}</div>

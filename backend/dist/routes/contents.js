@@ -47,19 +47,30 @@ Contents_Router.get("/content", Auth_middleware_1.default, (req, res) => __await
 }));
 Contents_Router.post("/content", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("Inside the function");
         const title = req.body.title;
         const link = req.body.link;
         const type = req.body.type;
         const description = req.body.description;
         //@ts-ignore
         const userId = req.user.user_id;
+        const content = {
+            title: "",
+            description: "",
+            link: "",
+            type: "",
+            userId: "",
+        };
+        if (title)
+            content.title = title;
+        if (link)
+            content.link = link;
+        if (type)
+            content.type = type;
+        if (description)
+            content.description = description;
+        content.userId = userId;
         yield contents_1.default.create({
-            title: title,
-            description: description,
-            link: link,
-            type: type,
-            userId: userId,
+            content
         });
         return res.status(200).json({
             ok: true,

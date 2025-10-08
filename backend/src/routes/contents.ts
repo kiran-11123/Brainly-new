@@ -6,6 +6,14 @@ import Links from '../Database_Schema/Links';
 import { random } from './utils';
 import { appendFile, link } from 'fs';
 import Users from '../Database_Schema/Users';
+
+interface Values{
+    title:string;
+    link:string;
+    type:string;
+    description:string;
+    userId:string;
+}
 Contents_Router.get("/content" , Authentication_token , async(req,res)=>{
         
     try{
@@ -55,13 +63,22 @@ Contents_Router.post("/content" , Authentication_token , async(req,res)=>{
          //@ts-ignore
          const userId = req.user.user_id;
 
+         const content :Values ={
+            title:"",
+            description:"",
+            link:"",
+            type:"",
+            userId:"",
+         }
+            if(title) content.title=title;
+            if(link) content.link=link;
+            if(type) content.type=type;
+            if(description) content.description=description;
+            content.userId=userId;
+
          await Contents.create({
-            title:title,
-            description:description,
-            link:link,
-            type:type,
-            userId:userId,
-          
+            content
+
 
          })
 

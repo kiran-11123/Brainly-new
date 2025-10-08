@@ -3,6 +3,13 @@ import CrossIcon from "../icons/CrossIcon";
 import { Button } from "./Button";
 import axios from "axios";
 
+interface Values{
+    title:string;
+    link:string;
+    type:string;
+    description:string;
+}
+
 
 // controlled component 
 export default function CreateContentModel({ open, Onclose }: { open: boolean, Onclose: () => void }) {
@@ -19,12 +26,29 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
         try{
             console.log("Submitting the form");
 
+            const obj:Values = {
+                title:"",
+                link:"",
+                type:"",
+                description:""
+            }
+
+            if(title.length>0 && title.length<10){
+                obj.title=title;
+            }
+            if(link.length>0){
+                obj.link=link;
+            }
+            if(type.length>0){
+                obj.type=type;
+            }
+            if(description.length>0 && description.length<50){
+                obj.description=description;
+            }
+
             const response = await axios.post("http://localhost:3000/api/v1/data/content" , {
 
-                title,
-                link,
-                description,
-                type
+                obj
 
             } ,{
                 withCredentials:true
