@@ -14,11 +14,11 @@ interface Values{
 
 // controlled component 
 export default function CreateContentModel({ open, Onclose }: { open: boolean, Onclose: () => void }) {
-    const [title, setTitle] = useState("");
-    const [link, setLink] = useState("");
-    const [type, setType] = useState("");
-    const[description , setDescription] = useState("");
-    const[message ,SetMessage] =useState("");
+    let [title, setTitle] = useState("");
+    let [link, setLink] = useState("");
+    let [type, setType] = useState("");
+    let [description, setDescription] = useState("");
+    let [message, SetMessage] = useState("");
 
 
       useEffect(()=>{
@@ -56,26 +56,23 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
             }
 
             if(title.length>0 && title.length<10){
+              
                 obj.title=title;
             }
             if(link.length>0){
                 obj.link=link;
             }
             if(type.length>0){
+                type=type.toLowerCase();
                 obj.type=type;
             }
             if(description.length>0 && description.length<50){
                 obj.description=description;
             }
 
-            const response = await axios.post("http://localhost:3000/api/v1/data/content" , {
-
-                obj
-
-            } ,{
-                withCredentials:true
-            })
-
+           const response = await axios.post("http://localhost:3000/api/v1/data/content", obj, {
+  withCredentials: true
+});
             console.log(response);
 
             if(response.status===200){

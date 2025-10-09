@@ -11,6 +11,13 @@ interface CardProps {
   id:string
 }
 
+function extractYouTubeId(url: string): string {
+  const regExp =
+    /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+  const match = url.match(regExp);
+  return match ? match[1] : "";
+}
+
 async function deleteContent(id:string) {
 
   try{
@@ -76,19 +83,19 @@ export default function Card({ title, link, type ,description ,id}: CardProps) {
 
       {/* Content */}
       <div className="mt-4 top-0 ">
-        {type === "youtube" && (
-          <div className="relative w-full aspect-video">
-            <iframe
-              className="absolute inset-0 w-full h-full rounded-lg border border-gray-200 shadow-sm"
-              src={link.replace("watch", "embed").replace("?v=", "/")}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            />
-          </div>
-        )}
+       {type === "youtube" && link && (
+  <div className="relative w-full aspect-video">
+    <iframe
+      className="absolute inset-0 w-full h-full rounded-lg border border-gray-200 shadow-sm"
+      src={`https://www.youtube.com/embed/${extractYouTubeId(link)}`}
+      title="YouTube video player"
+      frameBorder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+    />
+  </div>
+)}
 
         {type === "twitter"  && (
           <div

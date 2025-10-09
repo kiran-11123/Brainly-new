@@ -70,9 +70,7 @@ Contents_Router.post("/content", Auth_middleware_1.default, (req, res) => __awai
         if (description)
             content.description = description;
         content.userId = userId;
-        yield contents_1.default.create({
-            content
-        });
+        yield contents_1.default.create(content);
         return res.status(200).json({
             ok: true,
             message: "Content Added"

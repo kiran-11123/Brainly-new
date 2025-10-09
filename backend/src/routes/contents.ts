@@ -79,11 +79,8 @@ Contents_Router.post("/content" , Authentication_token , async(req,res)=>{
             if(description) content.description=description;
             content.userId=userId;
 
-         await Contents.create({
-            content
-
-
-         })
+         await Contents.create(
+            content)
 
          return res.status(200).json({
             ok:true,

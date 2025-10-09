@@ -1,18 +1,23 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
 
-
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: [
-        "./src/**/*.{js,jsx,ts,tsx}",
-    ],
-    theme: {
-        extend: {
-            fontFamily: {
-                'roboto': ['Roboto', 'sans-serif'], // 'roboto' is the Tailwind class prefix
-                'sans': ['Inter', 'sans-serif'], // Default body font (overrides Tailwind's default)
-                'poppins': ['Poppins', 'sans-serif'], // For headings
-            },
-        },
+  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  darkMode: false, // or 'media' or 'class'
+  theme: {
+    extend: {
+      fontFamily: {
+        poppins: ["Poppins", ...defaultTheme.fontFamily.sans],
+        roboto: ["Roboto", ...defaultTheme.fontFamily.sans],
+        montserrat: ["Montserrat", ...defaultTheme.fontFamily.sans],
+        inter: ["Inter", ...defaultTheme.fontFamily.sans],
+        nunito: ["Nunito", ...defaultTheme.fontFamily.sans],
+        // Keep a default alias if you like
+        sans: ["Poppins", ...defaultTheme.fontFamily.sans],
+      },
     },
-    plugins: [],
-}
+  },
+  variants: {
+    extend: {},
+  },
+  plugins: [],
+};
