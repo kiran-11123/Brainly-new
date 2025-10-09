@@ -107,7 +107,7 @@ export default function Card({ title, link, type ,description ,id}: CardProps) {
                 <a
                   href={link.replace("x.com", "twitter.com")}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer" className="m-0 max-w-full text-center font-poppins"
                 >
                   View Tweet
                 </a>

@@ -26,7 +26,9 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
 
     setTimeout(()=>{
 
-      alert("You can send the twitter link ,Youtube video link , Notes in description box if not link , files link also")
+      <div className="absolute top-16 right-4 bg-white text-gray-900 p-4 rounded-lg shadow-lg transition font-poppins text-xs sm:text-md">
+         You can send the twitter link,Youtube video link , Notes in description box if not link , files link also
+        </div>
 
     },3000);
   },[])
