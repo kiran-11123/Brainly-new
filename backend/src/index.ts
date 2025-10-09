@@ -5,13 +5,22 @@ import Auth_Router from './routes/Authentication_routes';
 import Contents_Router from './routes/contents';
 import cookieParser from "cookie-parser"
 import Search_Router from './routes/Search_data';
+import rateLimit from 'express-rate-limit';
 const app= express();
+
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 1000,
+  message:"Too Many requsts , Please try again later"
+})
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
 }));
+
 
 ConnectDB();
 
