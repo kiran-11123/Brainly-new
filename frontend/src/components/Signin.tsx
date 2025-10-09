@@ -34,7 +34,7 @@ export default function Signin() {
                     setEmail('')
                     setPassword('')
                 }, 3000)
-                navigate("/home");
+                navigate("/home", { replace: true });
 
             } else {
                 setMessage(response.data.message);
@@ -73,13 +73,13 @@ export default function Signin() {
 
     }
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 px-4">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] px-4">
 
-            <div className="w-full max-w-md  sm:max-w-lg rounded-md px-8 shadow-2xl bg-white">
+            <div className="w-full max-w-md  sm:max-w-lg rounded-md px-8 shadow-2xl bg-gradient-to-br from-blue-200 via-indigo-200 to-purple-200">
 
                 <h1 className="font-bold  text-blue-700 text-center text-lg sm:text-xl mb-6 mt-5">Login Here</h1>
 
-                <form className="space-y-5" onSubmit={SubmitForm}>
+                <form className="space-y-5" onSubmit={SubmitForm} autoComplete="off">
 
                     <div>
                         <label className="font-bold text-lg sm:text-xl block mb-1">
@@ -109,7 +109,7 @@ export default function Signin() {
 
                     <p className="text-sm sm:text-lg text-gray-600">
                         Don’t have an account?{' '}
-                        <Link to="/signup" className="text-blue-500 hover:underline cursor-pointer">
+                        <Link to="/register" className="text-blue-500 hover:underline cursor-pointer">
                             Sign up
                         </Link>
                     </p>

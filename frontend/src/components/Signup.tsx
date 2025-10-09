@@ -65,13 +65,13 @@ const Signup = () => {
 
   return (
     
-        <div className="flex flex-col items-center mt-5 bg-white px-4  ">
+        <div className="flex flex-col items-center h-screen  justify-center bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364]px-4  ">
 
-            <div className="w-full max-w-md sm:max-w-lg rounded shadow-2xl bg-white px-8 ">
+            <div className="w-full  max-w-md  sm:max-w-lg rounded shadow-2xl bg-gradient-to-br from-blue-200 via-indigo-200 to-purple-200 px-8 ">
 
                 <h1 className="font-bold  text-blue-700 text-center text-lg sm:text-xl mb-6 mt-5">Register Here</h1>
 
-                <form className="space-y-5" onSubmit={submitForm}>
+                <form className="space-y-5" onSubmit={submitForm} autoComplete="off">
 
                     <div>
                         <label className="font-bold text-lg sm:text-xl block mb-1">
@@ -112,7 +112,7 @@ const Signup = () => {
 
                     <p className="text-sm sm:text-lg text-gray-600 ">
                         Back to Login?{' '}
-                        <Link to="/" className="text-blue-500 hover:underline cursor-pointer">
+                        <Link to="/login" className="text-blue-500 hover:underline cursor-pointer">
                             Sign In
                         </Link>
                     </p>
