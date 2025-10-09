@@ -13,7 +13,7 @@ export default function Sidebar() {
 
             <div className=" mt-2  mb-10 flex items-center p-2  gap-2">
                 <Brain />
-                <h1 className="font-bold font-mono text-xl">Second Brain</h1>
+                <h1 className="font-poppins font-semibold text-xl">Second Brain</h1>
             </div>
 
             <div className="flex flex-col gap-4 cursor-pointer">
