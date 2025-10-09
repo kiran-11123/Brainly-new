@@ -17,7 +17,7 @@ interface ContentItem {
   description: string;
   link: string;
   title: string;
-  index:Number;
+  _id:string;
 }
 
 
@@ -52,6 +52,8 @@ export default function Home() {
         withCredentials: true
       });
 
+      console.log(response)
+
       if (response.status === 200) {
         setContents(response.data.result)
         console.log(response.data.result);
@@ -61,7 +63,11 @@ export default function Home() {
 
     }
 
-    getData();
+    setTimeout(()=>{
+
+      getData();
+
+    },20000)
 
   }, [])
 
@@ -116,7 +122,7 @@ export default function Home() {
           hover:outline-2 hover:outline-blue-300 hover:border hover:border-blue-400 
           items-stretch hover:shadow-xl hover:shadow-gray-300/50 rounded-2xl"
               >
-                <Card key={index} type={item.type} description={item.description} link={item.link} title={item.title} index={index} />
+                <Card key={index} type={item.type} description={item.description} link={item.link} title={item.title} id={item._id} />
               </div>
             ))
           ) : (

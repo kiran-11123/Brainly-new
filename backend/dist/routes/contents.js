@@ -19,6 +19,7 @@ const Auth_middleware_1 = __importDefault(require("../middlewares/Auth_middlewar
 const Links_1 = __importDefault(require("../Database_Schema/Links"));
 const utils_1 = require("./utils");
 const Users_1 = __importDefault(require("../Database_Schema/Users"));
+const inspector_1 = require("inspector");
 Contents_Router.get("/content", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //@ts-ignore
@@ -86,24 +87,31 @@ Contents_Router.post("/content", Auth_middleware_1.default, (req, res) => __awai
 }));
 Contents_Router.delete("/delete", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("Delete API Called..");
-        console.log(req.body);
-        const content_id = req.body.contentId;
-        yield contents_1.default.deleteMany({
-            content_id,
-            //@ts-ignore
-            userId: req.user.user_id
-        });
+        const { contentId } = req.body;
+        if (!contentId) {
+            return res.status(400).json({
+                message: "Content ID is required..",
+                ok: false,
+            });
+        }
+        const deleted = yield contents_1.default.findByIdAndDelete(contentId);
+        if (!deleted) {
+            return res.status(404).json({
+                message: "Content not found..",
+                ok: false,
+            });
+        }
         return res.status(200).json({
             message: "Content Deleted Successfully..",
-            ok: true
+            ok: true,
         });
     }
     catch (er) {
+        inspector_1.console.error("❌ Delete Error:", er);
         return res.status(500).json({
             message: "Internal Server Error..",
             error: er,
-            ok: false
+            ok: false,
         });
     }
 }));

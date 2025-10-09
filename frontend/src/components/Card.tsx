@@ -8,15 +8,15 @@ interface CardProps {
   link: string;
   description:string,
   type: "twitter" | "youtube" | "file" | "note" ;
-  index:Number
+  id:string
 }
 
-async function deleteContent(index:Number) {
+async function deleteContent(id:string) {
 
   try{
 
     const response = await axios.delete("http://localhost:3000/api/v1/data/delete" ,{
-      data:{contentId:index},
+      data:{contentId:id},
       withCredentials:true
     })
 
@@ -28,6 +28,7 @@ async function deleteContent(index:Number) {
     }
     else{
       alert("Error Occured while deleting..") 
+      console.log(response.data)
     }
 
 
@@ -42,7 +43,7 @@ async function deleteContent(index:Number) {
   
 }
 
-export default function Card({ title, link, type ,description ,index}: CardProps) {
+export default function Card({ title, link, type ,description ,id}: CardProps) {
 
 
  
@@ -68,7 +69,7 @@ export default function Card({ title, link, type ,description ,index}: CardProps
             </a>
           </div>
           <div className="text-gray-500 cursor-pointer">
-            <button title="delete" onClick={(e)=>deleteContent(index)}><Trash2 /></button>
+            <button title="delete" onClick={(e)=>deleteContent(id)}><Trash2 /></button>
           </div>
         </div>
       </div>

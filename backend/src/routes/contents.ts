@@ -6,6 +6,9 @@ import Links from '../Database_Schema/Links';
 import { random } from './utils';
 import { appendFile, link } from 'fs';
 import Users from '../Database_Schema/Users';
+import { ObjectId } from 'mongoose';
+import mongoose from 'mongoose';
+import { console } from 'inspector';
 
 interface Values{
     title:string;
@@ -98,41 +101,42 @@ Contents_Router.post("/content" , Authentication_token , async(req,res)=>{
 
 
 })
+Contents_Router.delete("/delete", async (req, res) => {
+  try {
+   
 
-Contents_Router.delete("/delete" , async(req,res)=>{
-       
-    try{
+    const { contentId } = req.body;
 
-        console.log("Delete API Called..")
-        console.log(req.body);
-     
-
-        const content_id = req.body.contentId;
-
-        await Contents.deleteMany({
-            content_id,
-            //@ts-ignore
-            userId:req.user.user_id
-
-        })
-
-        return res.status(200).json({
-            message:"Content Deleted Successfully..",
-            ok:true
-        })
-
-
-
+    if (!contentId) {
+      return res.status(400).json({
+        message: "Content ID is required..",
+        ok: false,
+      });
     }
-    catch(er){
-         
-        return res.status(500).json({
-            message:"Internal Server Error..",
-            error:er,
-            ok:false
-        })
+
+    const deleted = await Contents.findByIdAndDelete(contentId);
+
+    if (!deleted) {
+      return res.status(404).json({
+        message: "Content not found..",
+        ok: false,
+      });
     }
-})
+
+    return res.status(200).json({
+      message: "Content Deleted Successfully..",
+      ok: true,
+    });
+  } catch (er) {
+    console.error("❌ Delete Error:", er);
+    return res.status(500).json({
+      message: "Internal Server Error..",
+      error: er,
+      ok: false,
+    });
+  }
+});
+
 
 Contents_Router.post("/share"  , Authentication_token,async(req,res)=>{
       
