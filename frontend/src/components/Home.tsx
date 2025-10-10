@@ -11,11 +11,12 @@ import { PlusIcon } from "../icons/PlusIcon";
 import { ShareIcon_1 } from "../icons/ShareIcon_1";
 
 interface ContentItem {
-  type: "twitter" | "youtube" | "file" | "note";
+  type: "twitter" | "youtube" | "image" | "note";
   description: string;
   link: string;
   title: string;
   _id: string;
+  image:string|null;
 }
 
 export default function Home() {
@@ -128,6 +129,7 @@ useEffect(() => {
                   link={item.link}
                   title={item.title}
                   id={item._id}
+                  image={item.image || null}
                 />
               </div>
             ))

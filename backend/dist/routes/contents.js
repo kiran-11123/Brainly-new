@@ -20,6 +20,24 @@ const Links_1 = __importDefault(require("../Database_Schema/Links"));
 const utils_1 = require("./utils");
 const Users_1 = __importDefault(require("../Database_Schema/Users"));
 const inspector_1 = require("inspector");
+const multer_1 = __importDefault(require("multer"));
+const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
+const uploadDir = path_1.default.join(process.cwd(), "uploads");
+// ✅ Ensure uploads folder exists
+if (!fs_1.default.existsSync(uploadDir)) {
+    fs_1.default.mkdirSync(uploadDir, { recursive: true });
+}
+const storage = multer_1.default.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadDir);
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now();
+        cb(null, file.fieldname + '-' + uniqueSuffix + path_1.default.extname(file.originalname));
+    }
+});
+const upload = (0, multer_1.default)({ storage: storage });
 Contents_Router.get("/content", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //@ts-ignore
@@ -46,40 +64,47 @@ Contents_Router.get("/content", Auth_middleware_1.default, (req, res) => __await
         });
     }
 }));
-Contents_Router.post("/content", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// POST /content
+Contents_Router.post('/content', upload.single('EventImage'), Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const title = req.body.title;
-        const link = req.body.link;
-        const type = req.body.type;
-        const description = req.body.description;
-        //@ts-ignore
+        // Basic validation (expand with Joi/Zod for production)
+        const { title, link, type, description } = req.body;
+        const image = req.file ? req.file.path : null;
         const userId = req.user.user_id;
-        const content = {
-            title: "",
-            description: "",
-            link: "",
-            type: "",
-            userId: "",
-        };
+        // Handle image: Use req.file.path (full path) or req.file.filename (just name)
+        // For frontend access, you might want to serve via /uploads/:filename, so store relative path
+        const imagePath = req.file ? `/uploads/${req.file.filename}` : null; // Relative URL for easy serving
+        const data = {};
         if (title)
-            content.title = title;
+            data['title'] = title;
         if (link)
-            content.link = link;
+            data['link'] = link;
         if (type)
-            content.type = type;
+            data['type'] = type;
         if (description)
-            content.description = description;
-        content.userId = userId;
-        yield contents_1.default.create(content);
+            data['description'] = description;
+        if (image)
+            data['image'] = imagePath;
+        if (userId)
+            data['userId'] = userId;
+        const createdContent = yield contents_1.default.create(data);
         return res.status(200).json({
             ok: true,
-            message: "Content Added"
+            message: 'Content added successfully',
+            result: createdContent, // Optional: return the created doc
         });
     }
     catch (er) {
+        inspector_1.console.error('POST /content error:', er); // Log raw error
+        if (er instanceof multer_1.default.MulterError) {
+            return res.status(400).json({
+                message: 'File upload error: ' + er.message,
+                ok: false,
+            });
+        }
         return res.status(500).json({
-            message: "Internal Server Error",
-            error: er
+            message: 'Internal Server Error',
+            ok: false,
         });
     }
 }));

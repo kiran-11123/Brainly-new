@@ -9,6 +9,7 @@ interface Values{
     link:string;
     type:string;
     description:string;
+    image:File|null
 }
 
 
@@ -19,6 +20,8 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
     let [type, setType] = useState("");
     let [description, setDescription] = useState("");
     let [message, SetMessage] = useState("");
+    const [EventImage, SetEventImage] = useState<File | null>(null);
+
 
 
       useEffect(()=>{
@@ -44,7 +47,8 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
                 title:"",
                 link:"",
                 type:"",
-                description:""
+                description:"",
+                image:null
             }
 
             if(title.length > 10) {
@@ -71,6 +75,11 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
             if(description.length>0 && description.length<50){
                 obj.description=description;
             }
+            if(EventImage){
+                obj.image=EventImage
+            }
+
+            console.log(obj.image);
 
            const response = await axios.post("http://localhost:3000/api/v1/data/content", obj, {
   withCredentials: true
@@ -113,6 +122,11 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
         }
 
     }
+     function ImageSetting(e: React.ChangeEvent<HTMLInputElement>) {
+        if (e.target.files && e.target.files.length > 0) {
+            SetEventImage(e.target.files[0]);
+        }
+    }
 
     return (
         <div>
@@ -143,15 +157,26 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
                                             Title
                                         </label>
 
-                                        <input onChange={(e) => setTitle(e.target.value)} required value={title} className="w-full text-black px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter Title"  />
+                                        <input onChange={(e) => setTitle(e.target.value)}  value={title} className="w-full text-black px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter Title"  />
                                     </div>
+
+                                    <div>
+                                        <label className="font-bold text-lg sm:text-xl block mb-1 text-white">
+                                            Image
+                                        </label>
+
+                                        <input id="image"
+                                type="file"
+                                accept="image/*" onChange={ImageSetting}  className="w-full text-white px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="upload Image"  />
+                                    </div>
+
 
                                       <div>
                                         <label className="font-bold text-lg sm:text-xl block mb-1 text-white">
                                             Description
                                         </label>
 
-                                        <input onChange={(e) => setDescription(e.target.value)} required value={description} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter Description" />
+                                        <input onChange={(e) => setDescription(e.target.value)}  value={description} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter Description" />
                                     </div>
 
 
@@ -160,7 +185,7 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
                                             Link
                                         </label>
 
-                                        <input required onChange={(e) => setLink(e.target.value)} value={link} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Paste the Link here" />
+                                        <input  onChange={(e) => setLink(e.target.value)} value={link} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Paste the Link here" />
                                     </div>
 
                                     
@@ -170,7 +195,7 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
                                             Type
                                         </label>
 
-                                        <input required onChange={(e) => setType(e.target.value)} value={type} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="ex :twitter ,youtube ,file ,note" />
+                                        <input  required onChange={(e) => setType(e.target.value)} value={type} className="w-full px-4 py-2 rounded-md border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="ex :twitter ,youtube ,file ,note" />
                                     </div>
 
 

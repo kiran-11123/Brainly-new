@@ -1,15 +1,17 @@
 import axios from "axios";
 import { ShareIcon_1 } from "../icons/ShareIcon_1";
-import { Trash2, NotebookText, Youtube, Twitter, Files } from "lucide-react";
+import { Trash2, NotebookText, Youtube, Twitter, Files , Link } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 interface CardProps {
   title: string;
   link: string;
   description:string,
-  type: "twitter" | "youtube" | "file" | "note" ;
+  type: "twitter" | "youtube" | "image" | "note" ;
+  image:string|null;
   id:string
 }
+
 
 function extractYouTubeId(url: string): string {
   const regExp =
@@ -50,7 +52,10 @@ async function deleteContent(id:string) {
   
 }
 
-export default function Card({ title, link, type ,description ,id}: CardProps) {
+export default function Card({ title, link, type ,description ,id , image}: CardProps) {
+
+  
+const imageUrl = `http://localhost:3000/uploads/${image}`;
 
 
  
@@ -63,7 +68,7 @@ export default function Card({ title, link, type ,description ,id}: CardProps) {
           <div className="pr-2 text-gray-500 items-center flex">
             {type === "twitter" && <Twitter className="text-blue-900" />}
             {type === "youtube" && <Youtube className="text-red-800" />}
-            {type === "file" && <Files />}
+            {type === "image" && <Link />}
             {type === "note" && <NotebookText />}
           </div>
           <div className="font-semibold font-mono text-md">{title}</div>
@@ -97,6 +102,18 @@ export default function Card({ title, link, type ,description ,id}: CardProps) {
   </div>
 )}
 
+{type==="image" &&(
+
+   <div className="border border-gray-200 h-72 rounded-lg overflow-y-auto overflow-x-hidden shadow-sm bg-white flex justify-center">
+     <div className="w-full flex justify-center">
+
+      <img src={imageUrl} alt="Image"  className="w-full h-full object-cover"/>
+      </div> 
+    </div>
+)
+          
+}
+
         {type === "twitter"  && (
           <div
             
@@ -116,13 +133,9 @@ export default function Card({ title, link, type ,description ,id}: CardProps) {
           </div>
         )}
 
-        {type === "file" && (
+       
 
-          <div className="border border-gray-200 h-72 rounded-lg overflow-y-auto overflow-x-hidden shadow-sm bg-white flex justify-center items-center">
-            {description}
-            </div>
-
-        )} 
+     
 
         {type === "note" &&(
 

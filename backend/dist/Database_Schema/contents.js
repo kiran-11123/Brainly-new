@@ -8,6 +8,7 @@ const Content_Schema = new mongoose_1.default.Schema({
     title: { type: String },
     desciption: { type: String },
     link: { type: String },
+    image: { type: String },
     type: { type: String, enum: ["youtube", "twitter", "file", "image", "text"] },
     userId: { type: mongoose_1.default.Types.ObjectId, ref: 'Users', required: true }
 });

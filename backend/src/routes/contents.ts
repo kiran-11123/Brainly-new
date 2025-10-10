@@ -9,6 +9,33 @@ import Users from '../Database_Schema/Users';
 import { ObjectId } from 'mongoose';
 import mongoose from 'mongoose';
 import { console } from 'inspector';
+import multer from 'multer';
+import path from "path"
+import fs from "fs";
+
+
+const uploadDir = path.join(process.cwd(), "uploads");
+
+// ✅ Ensure uploads folder exists
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+
+const storage = multer.diskStorage({
+
+    destination:function(req,file,cb){
+        cb(null,uploadDir);
+    },
+
+    filename:function(req,file,cb){
+        const uniqueSuffix = Date.now();
+        cb(null,file.fieldname+'-'+uniqueSuffix+path.extname(file.originalname));
+    }
+})
+
+const upload = multer({storage:storage});
+
 
 interface Values{
     title:string;
@@ -16,6 +43,7 @@ interface Values{
     type:string;
     description:string;
     userId:string;
+    image:string|null;
 }
 Contents_Router.get("/content" , Authentication_token , async(req,res)=>{
         
@@ -51,53 +79,56 @@ Contents_Router.get("/content" , Authentication_token , async(req,res)=>{
          })
     }
 })
+// POST /content
+Contents_Router.post('/content', upload.single('image'), Authentication_token, async (req, res) => {
+  try {
+    // Basic validation (expand with Joi/Zod for production)
+    const { title, link, type, description  } = req.body;
 
-Contents_Router.post("/content" , Authentication_token , async(req,res)=>{
-      
+    const image = req.file ? req.file.path : null;
+
     
-   try{
 
-   
-         
-         const title = req.body.title
-         const link = req.body.link;
-         const type = req.body.type;
-         const description = req.body.description;
-         //@ts-ignore
-         const userId = req.user.user_id;
+    const userId = (req as any).user.user_id;
 
-         const content :Values ={
-            title:"",
-            description:"",
-            link:"",
-            type:"",
-            userId:"",
-         }
-            if(title) content.title=title;
-            if(link) content.link=link;
-            if(type) content.type=type;
-            if(description) content.description=description;
-            content.userId=userId;
+    // Handle image: Use req.file.path (full path) or req.file.filename (just name)
+    // For frontend access, you might want to serve via /uploads/:filename, so store relative path
+    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;  // Relative URL for easy serving
 
-         await Contents.create(
-            content)
+    const data: Partial<Values> = {};
 
-         return res.status(200).json({
-            ok:true,
-            message:"Content Added"
-         })
+    if(title) data['title']=title;
+    if(link) data['link']=link;
+    if(type) data['type']=type;
+    if(description) data['description']=description;
+    if(image) data['image']=imagePath;
+    if(userId) data['userId']=userId;
 
-   }
-   catch(er){
+    
+
+    const createdContent = await Contents.create(data);
+
+    return res.status(200).json({  // 201 for created
+      ok: true,
+      message: 'Content added successfully',
+      result: createdContent,  // Optional: return the created doc
+    });
+  } catch (er: any) {
+    console.error('POST /content error:', er);  // Log raw error
+    if (er instanceof multer.MulterError) {
+      return res.status(400).json({
+        message: 'File upload error: ' + er.message,
+        ok: false,
+      });
+    }
     return res.status(500).json({
-        message:"Internal Server Error",
-        error:er
-    })
-   }
+      message: 'Internal Server Error',
+      ok: false,
+    });
+  }
+});
 
 
-
-})
 Contents_Router.delete("/delete", async (req, res) => {
   try {
    
