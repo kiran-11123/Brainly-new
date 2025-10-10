@@ -11,6 +11,7 @@ const contents_1 = __importDefault(require("./routes/contents"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const Search_data_1 = __importDefault(require("./routes/Search_data"));
 const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
+const path_1 = __importDefault(require("path"));
 const app = (0, express_1.default)();
 const limiter = (0, express_rate_limit_1.default)({
     windowMs: 15 * 60 * 1000,
@@ -23,6 +24,7 @@ app.use((0, cors_1.default)({
     origin: 'http://localhost:5173',
     credentials: true
 }));
+app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "../uploads")));
 (0, db_1.default)();
 app.use("/api/v1/users", Authentication_routes_1.default);
 app.use("/api/v1/data", contents_1.default);

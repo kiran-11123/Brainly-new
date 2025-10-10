@@ -6,6 +6,7 @@ import Contents_Router from './routes/contents';
 import cookieParser from "cookie-parser"
 import Search_Router from './routes/Search_data';
 import rateLimit from 'express-rate-limit';
+import path from 'path';
 const app= express();
 
 
@@ -20,6 +21,7 @@ app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
 }));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 
 ConnectDB();

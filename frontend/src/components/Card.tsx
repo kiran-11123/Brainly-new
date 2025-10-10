@@ -109,7 +109,7 @@ console.log(imageUrl);
 {type === "image" && imageUrl && (
   <div className="border border-gray-200 h-72 rounded-lg overflow-hidden shadow-sm bg-white flex justify-center items-center">
     <img
-      src={`http://localhost:3000${image}`}
+      src={imageUrl}
       alt={title || "Uploaded Image"}
       className="w-full h-full object-cover"
       onError={(e) => (e.currentTarget.src = "/fallback.jpg")} // optional fallback
