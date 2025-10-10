@@ -1,16 +1,22 @@
 import SidebarItems from "./SidebarItem";
-import { Youtube, Twitter, Files, Link2, Tags, Brain, Menu, X } from "lucide-react";
+import { Youtube, Twitter, Files, Link2, Tags, Brain, Menu, X, Search } from "lucide-react";
 import { useState } from "react";
 
-export default function Sidebar() {
+interface props{
+   onFieldClick : (feild:string) =>void
+}
+
+export default function Sidebar({onFieldClick}:props) {
   const [isOpen, setIsOpen] = useState(false);
+
+   
 
   const items = [
     { title: "Tweet", icon: <Twitter /> },
     { title: "Videos", icon: <Youtube /> },
-    { title: "Files", icon: <Files /> },
-    { title: "Links", icon: <Link2 /> },
-    { title: "Tags", icon: <Tags /> },
+    { title: "Notes", icon: <Files /> },
+    { title: "Images", icon: <Link2 /> },
+    { title: "Files", icon: <Tags /> },
   ];
 
   return (
@@ -39,7 +45,7 @@ export default function Sidebar() {
         {/* Sidebar Items */}
         <div className="flex flex-col gap-4 cursor-pointer">
           {items.map((item) => (
-            <SidebarItems key={item.title} title={item.title} icon={item.icon} />
+            <button title="button" onClick={()=>onFieldClick(item.title)}> <SidebarItems key={item.title} title={item.title} icon={item.icon} /></button>
           ))}
         </div>
       </div>

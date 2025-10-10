@@ -6,7 +6,7 @@ const Content_Schema = new mongoose.Schema({
     title:{type:String},
     desciption:{type:String},
     link:{type:String},
-    type:{type:String , enum:["youtube" , "twitter" , "pdf" , "image" , "text"]},
+    type:{type:String , enum:["youtube" , "twitter" , "file" , "image" , "text"]},
     userId :{type:mongoose.Types.ObjectId , ref:'Users' ,required:true}
 
 })

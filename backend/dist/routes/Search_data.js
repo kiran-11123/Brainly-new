@@ -16,7 +16,7 @@ const express_1 = __importDefault(require("express"));
 const contents_1 = __importDefault(require("../Database_Schema/contents"));
 const Search_Router = express_1.default.Router();
 const Auth_middleware_1 = __importDefault(require("../middlewares/Auth_middleware"));
-Search_Router.get("/twitter", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Search_Router.get("/tweet", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //@ts-ignore
         const userID = req.user.user_id;
@@ -38,11 +38,11 @@ Search_Router.get("/twitter", Auth_middleware_1.default, (req, res) => __awaiter
         });
     }
 }));
-Search_Router.get("/video", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Search_Router.get("/videos", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //@ts-ignore
         const userID = req.user.user_id;
-        const result = yield contents_1.default.find({ userId: userID, type: "video" });
+        const result = yield contents_1.default.find({ userId: userID, type: "youtube" });
         if (result.length === 0) {
             return res.status(400).json({
                 message: "No Data present"
@@ -60,11 +60,11 @@ Search_Router.get("/video", Auth_middleware_1.default, (req, res) => __awaiter(v
         });
     }
 }));
-Search_Router.get("/file", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Search_Router.get("/notes", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //@ts-ignore
         const userID = req.user.user_id;
-        const result = yield contents_1.default.find({ userId: userID, type: "file" });
+        const result = yield contents_1.default.find({ userId: userID, type: "text" });
         if (result.length === 0) {
             return res.status(400).json({
                 message: "No Data present"
@@ -82,11 +82,11 @@ Search_Router.get("/file", Auth_middleware_1.default, (req, res) => __awaiter(vo
         });
     }
 }));
-Search_Router.get("/note", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Search_Router.get("/images", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //@ts-ignore
         const userID = req.user.user_id;
-        const result = yield contents_1.default.find({ userId: userID, type: "note" });
+        const result = yield contents_1.default.find({ userId: userID, type: "image" });
         if (result.length === 0) {
             return res.status(400).json({
                 message: "No Data present"

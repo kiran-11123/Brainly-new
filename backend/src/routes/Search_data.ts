@@ -6,7 +6,7 @@ import Authentication_token from '../middlewares/Auth_middleware';
 import { error } from 'console';
 
 
-Search_Router.get("/twitter" , Authentication_token , async(req,res)=>{
+Search_Router.get("/tweet" , Authentication_token , async(req,res)=>{
         
     try{
         
@@ -37,13 +37,13 @@ Search_Router.get("/twitter" , Authentication_token , async(req,res)=>{
 })
 
 
-Search_Router.get("/video" , Authentication_token , async(req,res)=>{
+Search_Router.get("/videos" , Authentication_token , async(req,res)=>{
         
     try{
         
         //@ts-ignore
         const userID = req.user.user_id;
-        const result = await Contents.find({userId:userID,type:"video"})
+        const result = await Contents.find({userId:userID,type:"youtube"})
 
         if(result.length ===0){
             return res.status(400).json({
@@ -69,13 +69,13 @@ Search_Router.get("/video" , Authentication_token , async(req,res)=>{
 
 
 
-Search_Router.get("/file" , Authentication_token , async(req,res)=>{
+Search_Router.get("/notes" , Authentication_token , async(req,res)=>{
         
     try{
         
         //@ts-ignore
         const userID = req.user.user_id;
-        const result = await Contents.find({userId:userID,type:"file"})
+        const result = await Contents.find({userId:userID,type:"text"})
 
         if(result.length ===0){
             return res.status(400).json({
@@ -100,13 +100,13 @@ Search_Router.get("/file" , Authentication_token , async(req,res)=>{
 })
 
 
-Search_Router.get("/note" , Authentication_token , async(req,res)=>{
+Search_Router.get("/images" , Authentication_token , async(req,res)=>{
         
     try{
         
         //@ts-ignore
         const userID = req.user.user_id;
-        const result = await Contents.find({userId:userID,type:"note"})
+        const result = await Contents.find({userId:userID,type:"image"})
 
         if(result.length ===0){
             return res.status(400).json({

@@ -23,6 +23,8 @@ export default function Home() {
   const [contents, setContents] = useState<ContentItem[]>([]);
   const [isFound, setIsFound] = useState(false);
 
+  const[selectedField  , setSelectedField] = useState<string | null >(null);
+
   const navigate = useNavigate();
 
 
@@ -32,6 +34,27 @@ export default function Home() {
     navigate("/", { replace: true }); // Redirect to login and prevent back
   }
 
+  // Define the function outside useEffect for better reusability (if it doesn't depend on other hooks/state).
+async function GetSearchData(selectedField: string | null) {
+  if (!selectedField) return;
+  try {
+    selectedField = selectedField.toLowerCase();
+    const response = await axios.get(`http://localhost:3000/api/v1/search/${selectedField}`, {
+      withCredentials: true,
+    });
+    if (response.status === 200) {
+      setContents(response.data.result); // Assuming setContents is defined in your component
+      // Removed window.location.reload() - use state updates instead for reactivity
+    } else {
+      console.log('Non-200 response:', response.data);
+    }
+  } catch (er) {
+    console.error('Error fetching search data:', er);
+  }
+}
+useEffect(() => {
+  GetSearchData(selectedField); // Await is handled inside the function definition
+}, [selectedField]);
   // Fetch content
   useEffect(() => {
     async function getData() {
@@ -58,7 +81,7 @@ export default function Home() {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar  onFieldClick={setSelectedField}/>
 
       {/* Main Content */}
       <div className="flex-1 p-4 sm:ml-72 bg-gradient-to-r from-cyan-800 via-purple-700 to-pink-700 overflow-y-auto">
