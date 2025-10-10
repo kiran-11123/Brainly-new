@@ -66,8 +66,9 @@ Search_Router.get("/notes", Auth_middleware_1.default, (req, res) => __awaiter(v
         const userID = req.user.user_id;
         const result = yield contents_1.default.find({ userId: userID, type: "text" });
         if (result.length === 0) {
-            return res.status(400).json({
-                message: "No Data present"
+            return res.status(204).json({
+                message: "No Data present",
+                result: result
             });
         }
         return res.status(200).json({
@@ -88,8 +89,32 @@ Search_Router.get("/images", Auth_middleware_1.default, (req, res) => __awaiter(
         const userID = req.user.user_id;
         const result = yield contents_1.default.find({ userId: userID, type: "image" });
         if (result.length === 0) {
-            return res.status(400).json({
-                message: "No Data present"
+            return res.status(204).json({
+                message: "No Data present",
+                result: result
+            });
+        }
+        return res.status(200).json({
+            message: "Data Feteched Successfully..",
+            result: result
+        });
+    }
+    catch (er) {
+        return res.status(500).json({
+            message: "Internal Server Error",
+            error: er
+        });
+    }
+}));
+Search_Router.get("/files", Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        //@ts-ignore
+        const userID = req.user.user_id;
+        const result = yield contents_1.default.find({ userId: userID, type: "file" });
+        if (result.length === 0) {
+            return res.status(204).json({
+                message: "No Data present",
+                result: result
             });
         }
         return res.status(200).json({

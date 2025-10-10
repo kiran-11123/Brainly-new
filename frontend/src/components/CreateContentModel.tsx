@@ -78,6 +78,7 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
             console.log(response);
 
             if(response.status===200){
+                window.location.reload();
                  SetMessage("Contents added successfully..")
 
                  setTimeout(()=>{

@@ -22,6 +22,7 @@ export default function Home() {
   const [modelOpen, setOpenModel] = useState(false);
   const [contents, setContents] = useState<ContentItem[]>([]);
   const [isFound, setIsFound] = useState(false);
+  const [message,setMessage] = useState("");
 
   const[selectedField  , setSelectedField] = useState<string | null >(null);
 
@@ -43,9 +44,13 @@ async function GetSearchData(selectedField: string | null) {
       withCredentials: true,
     });
     if (response.status === 200) {
+      setMessage("");
       setContents(response.data.result); // Assuming setContents is defined in your component
       // Removed window.location.reload() - use state updates instead for reactivity
     } else {
+      setMessage("No Data Present")
+
+   
       console.log('Non-200 response:', response.data);
     }
   } catch (er) {
@@ -65,6 +70,7 @@ useEffect(() => {
         );
 
         if (response.status === 200) {
+          setMessage("");
           setContents(response.data.result);
           setIsFound(true);
         }
@@ -74,8 +80,7 @@ useEffect(() => {
     }
 
     getData();
-    const interval = setInterval(getData, 20000); // refresh every 20s
-    return () => clearInterval(interval);
+   
   }, []);
 
   return (
@@ -111,7 +116,7 @@ useEffect(() => {
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {isFound && contents.length > 0 ? (
+          {isFound && !message  ? (
             contents.map((item) => (
               <div
                 key={item._id}
