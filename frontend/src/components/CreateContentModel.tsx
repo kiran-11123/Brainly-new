@@ -37,91 +37,77 @@ export default function CreateContentModel({ open, Onclose }: { open: boolean, O
   },[])
 
 
-    async function SubmitForm(e:any) {
-        e.preventDefault();
+   async function SubmitForm(e: any) {
+  e.preventDefault();
 
-        try{
-            console.log("Submitting the form");
+  try {
+    console.log("Submitting the form");
 
-            const obj:Values = {
-                title:"",
-                link:"",
-                type:"",
-                description:"",
-                image:null
-            }
-
-            if(title.length > 10) {
-                alert("Title should be less than 10 characters");
-                return;
-            }
-
-            if(description.length > 50) {
-                alert("Description should be less than 50 characters");
-                return;
-            }
-
-            if(title.length>0 && title.length<10){
-              
-                obj.title=title;
-            }
-            if(link.length>0){
-                obj.link=link;
-            }
-            if(type.length>0){
-                type=type.toLowerCase();
-                obj.type=type;
-            }
-            if(description.length>0 && description.length<50){
-                obj.description=description;
-            }
-            if(EventImage){
-                obj.image=EventImage
-            }
-
-            console.log(obj.image);
-
-           const response = await axios.post("http://localhost:3000/api/v1/data/content", obj, {
-  withCredentials: true
-});
-            console.log(response);
-
-            if(response.status===200){
-                window.location.reload();
-                 SetMessage("Contents added successfully..")
-
-                 setTimeout(()=>{
-
-                    setDescription("");
-                    setLink("");
-                    setTitle("");
-                    setType("");
-
-                 },2000)
-            }
-            else{
-
-                SetMessage(response.data.message);
-                setTimeout(()=>{
-
-                    setDescription("");
-                    setLink("");
-                    setTitle("");
-                    setType("");
-
-                 },2000)
-
-            }
-
-        }
-        catch(er){
-            
-            console.log(er);
-            SetMessage("Request Failed . Server Error")
-                         
-        }
-
+    if (title.length > 10) {
+      alert("Title should be less than 10 characters");
+      return;
     }
+
+    if (description.length > 50) {
+      alert("Description should be less than 50 characters");
+      return;
+    }
+
+    // ✅ Create FormData for multipart request
+    const formData = new FormData();
+
+    if(title.length > 0){
+    formData.append("title", title);
+    }
+    if(link.length > 0){
+    formData.append("link", link);
+    }
+    if(type.length > 0){
+    formData.append("type", type.toLowerCase());
+    }
+
+    if(description.length > 0){     
+    formData.append("description", description);
+    }
+    // ✅ Only append image if selected
+    if (EventImage) {
+      formData.append("image", EventImage); // must match `upload.single('image')`
+    }
+
+    console.log("Image:", EventImage);
+
+    const response = await axios.post(
+      "http://localhost:3000/api/v1/data/content",
+      formData,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log(response);
+
+    if (response.status === 201) {
+      SetMessage("Content added successfully!");
+      window.location.reload();
+
+      setTimeout(() => {
+        setDescription("");
+        setLink("");
+        setTitle("");
+        setType("");
+      }, 2000);
+    } else {
+      SetMessage(response.data.message);
+    }
+  } catch (er) {
+    console.error(er);
+    SetMessage("Request Failed. Server Error");
+  }
+}
+
      function ImageSetting(e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.files && e.target.files.length > 0) {
             SetEventImage(e.target.files[0]);

@@ -54,8 +54,12 @@ async function deleteContent(id:string) {
 
 export default function Card({ title, link, type ,description ,id , image}: CardProps) {
 
-  
-const imageUrl = `http://localhost:3000/uploads/${image}`;
+
+
+const imageUrl = `http://localhost:3000${image}`;
+console.log(imageUrl);
+
+
 
 
  
@@ -102,18 +106,16 @@ const imageUrl = `http://localhost:3000/uploads/${image}`;
   </div>
 )}
 
-{type==="image" &&(
-
-   <div className="border border-gray-200 h-72 rounded-lg overflow-y-auto overflow-x-hidden shadow-sm bg-white flex justify-center">
-     <div className="w-full flex justify-center">
-
-      <img src={imageUrl} alt="Image"  className="w-full h-full object-cover"/>
-      </div> 
-    </div>
-)
-          
-}
-
+{type === "image" && imageUrl && (
+  <div className="border border-gray-200 h-72 rounded-lg overflow-hidden shadow-sm bg-white flex justify-center items-center">
+    <img
+      src={`http://localhost:3000${image}`}
+      alt={title || "Uploaded Image"}
+      className="w-full h-full object-cover"
+      onError={(e) => (e.currentTarget.src = "/fallback.jpg")} // optional fallback
+    />
+  </div>
+)}
         {type === "twitter"  && (
           <div
             

@@ -79,54 +79,50 @@ Contents_Router.get("/content" , Authentication_token , async(req,res)=>{
          })
     }
 })
-// POST /content
-Contents_Router.post('/content', upload.single('image'), Authentication_token, async (req, res) => {
-  try {
-    // Basic validation (expand with Joi/Zod for production)
-    const { title, link, type, description  } = req.body;
+Contents_Router.post(
+  '/content',
+  upload.single('image'),
+  Authentication_token,
+  async (req, res) => {
+    try {
+      const { title, link, type, description } = req.body;
+      const userId = (req as any).user?.user_id;
 
-    const image = req.file ? req.file.path : null;
+      const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
 
-    
+      const data: Partial<Values> = {
+        ...(title && { title }),
+        ...(link && { link }),
+        ...(type && { type }),
+        ...(description && { description }),
+        ...(imagePath && { image: imagePath }),
+        ...(userId && { userId }),
+      };
 
-    const userId = (req as any).user.user_id;
+      console.log("New content data:", data);
 
-    // Handle image: Use req.file.path (full path) or req.file.filename (just name)
-    // For frontend access, you might want to serve via /uploads/:filename, so store relative path
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;  // Relative URL for easy serving
+      const createdContent = await Contents.create(data);
 
-    const data: Partial<Values> = {};
-
-    if(title) data['title']=title;
-    if(link) data['link']=link;
-    if(type) data['type']=type;
-    if(description) data['description']=description;
-    if(image) data['image']=imagePath;
-    if(userId) data['userId']=userId;
-
-    
-
-    const createdContent = await Contents.create(data);
-
-    return res.status(200).json({  // 201 for created
-      ok: true,
-      message: 'Content added successfully',
-      result: createdContent,  // Optional: return the created doc
-    });
-  } catch (er: any) {
-    console.error('POST /content error:', er);  // Log raw error
-    if (er instanceof multer.MulterError) {
-      return res.status(400).json({
-        message: 'File upload error: ' + er.message,
+      return res.status(201).json({
+        ok: true,
+        message: 'Content added successfully',
+        result: createdContent,
+      });
+    } catch (er: any) {
+      console.error('POST /content error:', er);
+      if (er instanceof multer.MulterError) {
+        return res.status(400).json({
+          ok: false,
+          message: 'File upload error: ' + er.message,
+        });
+      }
+      return res.status(500).json({
         ok: false,
+        message: 'Internal Server Error',
       });
     }
-    return res.status(500).json({
-      message: 'Internal Server Error',
-      ok: false,
-    });
   }
-});
+);
 
 
 Contents_Router.delete("/delete", async (req, res) => {

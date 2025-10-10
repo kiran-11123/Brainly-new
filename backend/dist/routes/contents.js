@@ -64,47 +64,32 @@ Contents_Router.get("/content", Auth_middleware_1.default, (req, res) => __await
         });
     }
 }));
-// POST /content
-Contents_Router.post('/content', upload.single('EventImage'), Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Contents_Router.post('/content', upload.single('image'), Auth_middleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        // Basic validation (expand with Joi/Zod for production)
         const { title, link, type, description } = req.body;
-        const image = req.file ? req.file.path : null;
-        const userId = req.user.user_id;
-        // Handle image: Use req.file.path (full path) or req.file.filename (just name)
-        // For frontend access, you might want to serve via /uploads/:filename, so store relative path
-        const imagePath = req.file ? `/uploads/${req.file.filename}` : null; // Relative URL for easy serving
-        const data = {};
-        if (title)
-            data['title'] = title;
-        if (link)
-            data['link'] = link;
-        if (type)
-            data['type'] = type;
-        if (description)
-            data['description'] = description;
-        if (image)
-            data['image'] = imagePath;
-        if (userId)
-            data['userId'] = userId;
+        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.user_id;
+        const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+        const data = Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, (title && { title })), (link && { link })), (type && { type })), (description && { description })), (imagePath && { image: imagePath })), (userId && { userId }));
+        inspector_1.console.log("New content data:", data);
         const createdContent = yield contents_1.default.create(data);
-        return res.status(200).json({
+        return res.status(201).json({
             ok: true,
             message: 'Content added successfully',
-            result: createdContent, // Optional: return the created doc
+            result: createdContent,
         });
     }
     catch (er) {
-        inspector_1.console.error('POST /content error:', er); // Log raw error
+        inspector_1.console.error('POST /content error:', er);
         if (er instanceof multer_1.default.MulterError) {
             return res.status(400).json({
-                message: 'File upload error: ' + er.message,
                 ok: false,
+                message: 'File upload error: ' + er.message,
             });
         }
         return res.status(500).json({
-            message: 'Internal Server Error',
             ok: false,
+            message: 'Internal Server Error',
         });
     }
 }));
